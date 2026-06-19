@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/bg">
+        <file>metro.jpg</file>
+    </qresource>
+    <qresource prefix="/default">
+        <file>profile.jpg</file>
+        <file>MayMayLauncher.ico</file>
+    </qresource>
+</RCC>
