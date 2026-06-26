@@ -3,6 +3,7 @@
 
 #include <QPixmap>
 #include <QPalette>
+#include <QTime>
 
 videoplayer::videoplayer(QString path, QWidget *parent) :
     QWidget(parent),
@@ -48,6 +49,17 @@ videoplayer::videoplayer(QString path, QWidget *parent) :
 
     connect(ui->pause, SIGNAL(clicked()), player, SLOT(pause()));
 
+    // Shortcut
+    playShortcut = new QShortcut(QKeySequence(Qt::Key_Space), this);
+    playShortcut->setContext(Qt::ApplicationShortcut);
+    connect(playShortcut, &QShortcut::activated, this, [this]() {
+        if (player->state() == QMediaPlayer::PlayingState) {
+            emit player->pause();
+        } else {
+            emit player->play();
+        }
+    });
+
     // User drags progress slider to seek through the audio track
     // Note: Use sliderMoved instead of valueChanged to avoid fight-back loops while playing
     connect(ui->horizontalSlider, &QSlider::sliderMoved, player, &QMediaPlayer::setPosition);
@@ -57,6 +69,15 @@ videoplayer::videoplayer(QString path, QWidget *parent) :
     // ----------------------------------------------------
     // Update progress slider track position as audio plays
     connect(player, &QMediaPlayer::positionChanged, ui->horizontalSlider, &QSlider::setValue);
+
+    connect(player, &QMediaPlayer::positionChanged, this, [this](qint64 position) {
+        int seconds = (position / 1000) % 60;
+        int minutes = (position / 60000) % 60;
+        int hours = (position / 3600000) % 24;
+
+        QTime time(hours, minutes, seconds);
+        ui->length->setText(time.toString("hh:mm:ss"));
+    });
 
     // Update progress slider max boundary when a new file loads
     connect(player, &QMediaPlayer::durationChanged, this, [this](qint64 duration) {
@@ -95,6 +116,18 @@ void videoplayer::paintEvent(QPaintEvent *event)
     // Always call the base class implementation if needed
     QWidget::paintEvent(event);
 }
+
+//void videoplayer::keyPressEvent(QKeyEvent *event)
+//{
+//    if (event->key() == Qt::Key_Space) {
+//        if (player->state() == QMediaPlayer::PlayingState) {
+//            emit player->pause();
+//        } else {
+//            emit player->play();
+//        }
+//    }
+//    QWidget::keyPressEvent(event);
+//}
 
 void videoplayer::on_rewind_clicked()
 {

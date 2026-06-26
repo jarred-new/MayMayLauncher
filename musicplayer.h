@@ -8,6 +8,8 @@
 
 #include <QShowEvent>
 #include <QCloseEvent>
+//#include <QKeyEvent>
+#include <QShortcut>
 #include <QPaintEvent>
 #include <QStyleOption>
 #include <QPainter>
@@ -31,6 +33,7 @@ protected:
     void showEvent(QShowEvent* event) override;
     void closeEvent(QCloseEvent* event) override;
     void paintEvent(QPaintEvent* event) override;
+//    void keyPressEvent(QKeyEvent* event) override;
 
 private slots:
     void on_rewind_clicked();
@@ -42,6 +45,7 @@ private:
     QPropertyAnimation *fadeIn;
     QPropertyAnimation *fadeOut;
     QMediaPlayer *player;
+    QShortcut* playShortcut;
 };
 
 #endif // MUSICPLAYER_H

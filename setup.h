@@ -60,6 +60,7 @@ public:
         previewLabel = new QLabel;
         QPixmap profilePic(":/default/profile.jpg");
 
+        previewLabel->setScaledContents(true);
         previewLabel->setPixmap(
             profilePic.scaled(
                 previewLabel->size(),
@@ -123,6 +124,7 @@ private slots:
 
         QPixmap pix(fileName);
 
+        previewLabel->setScaledContents(true);
         previewLabel->setPixmap(
             pix.scaled(
                 previewLabel->size(),
@@ -142,6 +144,7 @@ private slots:
 
             QPixmap pix(":/default/profile.jpg");
 
+            previewLabel->setScaledContents(true);
             previewLabel->setPixmap(
                 pix.scaled(
                     previewLabel->size(),
@@ -184,6 +187,7 @@ public:
         pictureLabel = new QLabel;
         picturePreview = new QLabel;
 
+        picturePreview->setScaledContents(true);
         picturePreview->setFixedSize(128,128);
         picturePreview->setFrameShape(QFrame::Box);
         picturePreview->setAlignment(Qt::AlignCenter);

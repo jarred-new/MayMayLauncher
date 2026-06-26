@@ -33,6 +33,8 @@ private:
     Ui::pictureviewer *ui;
     QPropertyAnimation *fadeIn;
     QPropertyAnimation *fadeOut;
+    QMovie *gif;
+    QPixmap *pic;
 };
 
 #endif // PICTUREVIEWER_H

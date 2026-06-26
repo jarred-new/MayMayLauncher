@@ -79,9 +79,18 @@ QPushButton:active {
     <layout class="QVBoxLayout" name="verticalLayout_2"/>
    </item>
    <item>
-    <widget class="QSlider" name="horizontalSlider">
-     <property name="styleSheet">
-      <string notr="true">/* The base slider container */
+    <widget class="QFrame" name="horizontalFrame">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QSlider" name="horizontalSlider">
+        <property name="styleSheet">
+         <string notr="true">/* The base slider container */
 QSlider:horizontal {
 	background: transparent;
     height: 30px;
@@ -129,10 +138,33 @@ QSlider::handle:horizontal:pressed {
     border: 2px solid #1E40AF;
 }
 </string>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="length">
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>12</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLabel {
+	color: white;
+}</string>
+        </property>
+        <property name="text">
+         <string>00:00:00</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
@@ -169,6 +201,9 @@ QPushButton:active {
        </property>
        <property name="text">
         <string>Play</string>
+       </property>
+       <property name="default">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -240,6 +275,9 @@ QPushButton:active {
        <property name="text">
         <string>Rewind</string>
        </property>
+       <property name="shortcut">
+        <string>Left</string>
+       </property>
       </widget>
      </item>
      <item>
@@ -274,6 +312,9 @@ QPushButton:active {
        </property>
        <property name="text">
         <string>Forward</string>
+       </property>
+       <property name="shortcut">
+        <string>Right</string>
        </property>
       </widget>
      </item>

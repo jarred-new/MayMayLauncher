@@ -70,15 +70,40 @@
            </property>
           </widget>
          </item>
-         <item>
+         <item alignment="Qt::AlignHCenter">
           <widget class="QToolButton" name="toolButton_2">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>128</height>
+            </size>
+           </property>
+           <property name="sizeIncrement">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt; font-weight:600; color:#0dee3a;&quot;&gt;... Account Settings&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Show account settings to modify your profile and name.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
            <property name="styleSheet">
             <string notr="true">QToolButton {
+	background: transparent;
 	color: white;
 }</string>
            </property>
            <property name="text">
             <string>...</string>
+           </property>
+           <property name="popupMode">
+            <enum>QToolButton::InstantPopup</enum>
            </property>
            <property name="autoRaise">
             <bool>false</bool>
@@ -113,11 +138,18 @@
 }</string>
          </property>
          <property name="text">
-          <string>TextLabel</string>
+          <string>Welcome</string>
          </property>
         </widget>
        </item>
       </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="Line" name="line_2">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
      </widget>
     </item>
     <item>
@@ -139,7 +171,79 @@
     <item>
      <widget class="QListView" name="listView">
       <property name="styleSheet">
-       <string notr="true"/>
+       <string notr="true">QListView {
+background-color: rgba(194, 120, 10, 64);
+border-radius: 15px;
+}
+
+QListView::item {
+color: white;
+shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+}
+
+QListView::item:selected {
+background: rgba(255, 255, 255, 0.3);
+}
+
+QListView::item:hover {
+background: rgba(255, 255, 255, 0.1);
+}
+
+/* Target the vertical scroll bar specifically inside the list view */
+QListView QScrollBar:vertical {
+    border: none;
+    background: #F0F2F5;
+    width: 10px;
+    margin: 0px 0px 0px 0px;
+    border-radius: 5px;
+}
+
+/* The draggable handle */
+QListView QScrollBar::handle:vertical {
+    background: #C1C1C1;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+/* Handle color changes when hovering */
+QListView QScrollBar::handle:vertical:hover {
+    background: #A8A8A8;
+}
+
+/* Handle color changes when clicked/pressed */
+QListView QScrollBar::handle:vertical:pressed {
+    background: #787878;
+}
+
+/* Hide the top scroll arrow button */
+QListView QScrollBar::sub-line:vertical {
+    height: 0px;
+    background: none;
+}
+
+/* Hide the bottom scroll arrow button */
+QListView QScrollBar::add-line:vertical {
+    height: 0px;
+    background: none;
+}
+
+/* Smooth out the background area behind the handle */
+QListView QScrollBar::up-arrow:vertical, 
+QListView QScrollBar::down-arrow:vertical {
+    background: none;
+}
+
+QListView QScrollBar::add-page:vertical, 
+QListView QScrollBar::sub-page:vertical {
+    background: none;
+}
+</string>
+      </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAsNeeded</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAsNeeded</enum>
       </property>
      </widget>
     </item>
@@ -160,6 +264,13 @@
      </spacer>
     </item>
     <item>
+     <widget class="Line" name="line">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="QFrame" name="tools">
       <property name="styleSheet">
        <string notr="true">/* QFrame {
@@ -170,6 +281,9 @@
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
         <widget class="QPushButton" name="pushButton_2">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt; color:#0dee3a;&quot;&gt;+ Add Item&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Add a file into your launcher list&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;(e.g. Apps, Pictures, Videos, Music)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Shortcut Key: Ctrl+&amp;quot;+&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="styleSheet">
           <string notr="true">QPushButton {
 	box-shadow:inset 0px 1px 0px 0px #d9fbbe;
@@ -207,6 +321,9 @@ QPushButton:active {
        </item>
        <item>
         <widget class="QPushButton" name="pushButton_3">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt; color:#d10f12;&quot;&gt;- Remove Item&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Remove your item into your launcher list&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Remember!&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400; font-style:italic;&quot;&gt;You need to select the item to delete!&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Shortcut Key: Delete&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="styleSheet">
           <string notr="true">QPushButton {
 	box-shadow:inset 0px 1px 0px 0px #d9fbbe;
@@ -244,6 +361,9 @@ QPushButton:active {
        </item>
        <item>
         <widget class="QToolButton" name="toolButton">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt; color:#0dee3a;&quot;&gt;... More Options&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Show more options&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="styleSheet">
           <string notr="true">QToolButton {
 	box-shadow:inset 0px 1px 0px 0px #d9fbbe;
@@ -277,8 +397,17 @@ QToolButton:active {
          <property name="shortcut">
           <string>Ctrl+B</string>
          </property>
+         <property name="popupMode">
+          <enum>QToolButton::InstantPopup</enum>
+         </property>
+         <property name="toolButtonStyle">
+          <enum>Qt::ToolButtonIconOnly</enum>
+         </property>
+         <property name="autoRaise">
+          <bool>false</bool>
+         </property>
          <property name="arrowType">
-          <enum>Qt::UpArrow</enum>
+          <enum>Qt::NoArrow</enum>
          </property>
         </widget>
        </item>
@@ -297,6 +426,9 @@ QToolButton:active {
        </item>
        <item>
         <widget class="QPushButton" name="pushButton">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt; color:#d10f12;&quot;&gt;(X) Close &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Close MayMayLauncher&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Shortcut Key: Alt+F4&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="styleSheet">
           <string notr="true">QPushButton {
 	box-shadow:inset 0px 1px 0px 0px #f5978e;
@@ -335,6 +467,13 @@ QPushButton:active {
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>pushButton_2</tabstop>
+  <tabstop>pushButton_3</tabstop>
+  <tabstop>toolButton</tabstop>
+  <tabstop>pushButton</tabstop>
+  <tabstop>toolButton_2</tabstop>
+ </tabstops>
  <resources>
   <include location="res.qrc"/>
  </resources>

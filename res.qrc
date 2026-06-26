@@ -5,5 +5,7 @@
     <qresource prefix="/default">
         <file>profile.jpg</file>
         <file>MayMayLauncher.ico</file>
+        <file>crashimage.jpg</file>
+        <file>secretprofile.jpg</file>
     </qresource>
 </RCC>

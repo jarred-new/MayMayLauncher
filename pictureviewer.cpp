@@ -2,6 +2,7 @@
 #include "ui_pictureviewer.h"
 
 #include <QPixmap>
+#include <QMovie>
 #include <QSize>
 
 pictureviewer::pictureviewer(QString path, QWidget *parent) :
@@ -34,18 +35,33 @@ pictureviewer::pictureviewer(QString path, QWidget *parent) :
     // Disconnect/delete when finished or simply trigger close on completion
     connect(fadeOut, &QPropertyAnimation::finished, this, &QWidget::close);
 
-    QPixmap pic(path);
+    if (!path.endsWith(".gif")) {
+        pic = new QPixmap(path);
 
-    pic = pic.scaled(
-                ui->pic->size(),
-                Qt::AspectRatioMode::KeepAspectRatio);
+        ui->pic->setPixmap(pic->scaled(
+                    ui->pic->size(),
+                    Qt::AspectRatioMode::KeepAspectRatio));
 
-    ui->pic->setPixmap(pic);
+        //ui->pic->setPixmap(pic);
+    }
+    else {
+        gif = new QMovie(path);
+
+        ui->pic->setMovie(gif);
+        gif->start();
+    }
 }
 
 pictureviewer::~pictureviewer()
 {
     delete ui;
+
+    if (pic) {
+        delete pic;
+    }
+    else if (gif) {
+        delete gif;
+    }
 }
 
 void pictureviewer::showEvent(QShowEvent *event)
@@ -56,6 +72,13 @@ void pictureviewer::showEvent(QShowEvent *event)
 
 void pictureviewer::closeEvent(QCloseEvent *event)
 {
+    if (pic) {
+        ui->pic->clear();
+    }
+    else if (gif) {
+        gif->stop();
+        //gif->deleteLater();
+    }
     fadeOut->start();
     QWidget::closeEvent(event);
 }

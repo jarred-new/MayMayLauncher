@@ -7,6 +7,7 @@
 
 #include <QShowEvent>
 #include <QCloseEvent>
+#include <QKeyEvent>
 
 #include <QMessageBox>
 #include <QFileDialog>
@@ -27,6 +28,13 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    static void updateListDisplay();
+    static void clearAllLists();
+    static void exportLists();
+    static void importLists();
+
+//signals:
+//    void enterPressed(const QModelIndex &index);
 
 protected:
     QPropertyAnimation *fadeInAnimation;
@@ -34,6 +42,13 @@ protected:
 protected:
     void showEvent(QShowEvent *event) override;
     void closeEvent(QCloseEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
+    bool eventFilter(QObject *obj, QEvent *event) override;
+
+protected:
+    bool fileMatchesCategory(const QString& filePath, const QString& category);
+    void changeProfilePicture();
+    void changeProfileName();
 
 //private slots:
 //    void on_MainWindow_destroyed();
@@ -47,12 +62,20 @@ private slots:
 
     void on_listView_doubleClicked(const QModelIndex &index);
 
+public slots:
+    void changeTypeToIcon();
+    void changeTypeToList();
+    void clearListView();
+    bool exportStandardModelToJson(const QString& fileName);
+    bool importJsonToStandardModel(const QString& fileName);
+
 private:
     void loadList();
     void saveList();
 
 private:
     Ui::MainWindow *ui;
+    static MainWindow *instance; // Add a static pointer
     QStandardItemModel *m_model;
 };
 

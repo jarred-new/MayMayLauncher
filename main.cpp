@@ -1,5 +1,7 @@
 #include "mainwindow.h"
+#include "crashhandler.h"
 #include "setup.h"
+
 #include <QApplication>
 
 #include <QSettings>
@@ -85,6 +87,7 @@ int main(int argc, char *argv[])
     //            "The warning message has been skipped as per your preference.");
     //        return 0;
             MinimieAllWindows();
+            CrashHandler::install();
             MainWindow w;
             w.show();
 
@@ -116,6 +119,7 @@ int main(int argc, char *argv[])
                 settings.setValue("skip_warning_msg", true);
             }
             MinimieAllWindows();
+            CrashHandler::install();
             MainWindow w;
             w.show();
 
@@ -134,6 +138,7 @@ int main(int argc, char *argv[])
     //            "The warning message has been skipped as per your preference.");
     //        return 0;
             MinimieAllWindows();
+            CrashHandler::install();
             MainWindow w;
             w.show();
 
@@ -165,6 +170,7 @@ int main(int argc, char *argv[])
                 settings.setValue("skip_warning_msg", true);
             }
             MinimieAllWindows();
+            CrashHandler::install();
             MainWindow w;
             w.show();
 
