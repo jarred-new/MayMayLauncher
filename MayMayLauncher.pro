@@ -43,8 +43,12 @@ RESOURCES += \
 RC_FILE += \
     resource.rc
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/libmagic/lib/ -lmagic
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/libmagic/lib/ -lmagicd
-
 INCLUDEPATH += $$PWD/libmagic/include
 DEPENDPATH += $$PWD/libmagic/include
+
+win32 {
+    # Direct path linking bypasses the -l short-name resolution issues
+    CONFIG(release, debug|release): LIBS += $$PWD/libmagic/lib/magic.lib
+    else:CONFIG(debug, debug|release): LIBS += $$PWD/libmagic/debug/lib/magic.lib
+}
+

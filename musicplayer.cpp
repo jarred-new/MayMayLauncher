@@ -38,8 +38,10 @@ musicplayer::musicplayer(QString path, QWidget *parent) :
     ui->label->setText(path);
 
     player = new QMediaPlayer(this);
-    player->setMedia(QUrl::fromLocalFile(path));
-    player->setVolume(100); // Volume between 0 and 100
+    audioOut = new QAudioOutput(this);
+    player->setAudioOutput(audioOut);
+    player->setSource(QUrl::fromLocalFile(path));
+    audioOut->setVolume(100); // Volume between 0 and 100
     player->play();
 
     connect(ui->play, SIGNAL(clicked()), player, SLOT(play()));
@@ -50,7 +52,7 @@ musicplayer::musicplayer(QString path, QWidget *parent) :
     playShortcut = new QShortcut(QKeySequence(Qt::Key_Space), this);
     playShortcut->setContext(Qt::ApplicationShortcut);
     connect(playShortcut, &QShortcut::activated, this, [this]() {
-        if (player->state() == QMediaPlayer::PlayingState) {
+        if (player->playbackState() == QMediaPlayer::PlayingState) {
             emit player->pause();
         } else {
             emit player->play();
@@ -103,7 +105,7 @@ void musicplayer::paintEvent(QPaintEvent *event)
 {
    // This boiler-plate code enables custom QWidget stylesheets
    QStyleOption opt;
-   opt.init(this);
+   opt.initFrom(this);
    QPainter p(this);
    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 

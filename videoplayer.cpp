@@ -42,7 +42,7 @@ videoplayer::videoplayer(QString path, QWidget *parent) :
 
     ui->verticalLayout_2->addWidget(videoWidget);
 
-    player->setMedia(QUrl::fromLocalFile(path));
+    player->setSource(QUrl::fromLocalFile(path));
     player->play();
 
     connect(ui->play, SIGNAL(clicked()), player, SLOT(play()));
@@ -53,7 +53,7 @@ videoplayer::videoplayer(QString path, QWidget *parent) :
     playShortcut = new QShortcut(QKeySequence(Qt::Key_Space), this);
     playShortcut->setContext(Qt::ApplicationShortcut);
     connect(playShortcut, &QShortcut::activated, this, [this]() {
-        if (player->state() == QMediaPlayer::PlayingState) {
+        if (player->playbackState() == QMediaPlayer::PlayingState) {
             emit player->pause();
         } else {
             emit player->play();
@@ -109,7 +109,7 @@ void videoplayer::paintEvent(QPaintEvent *event)
 {
     // This boiler-plate code enables custom QWidget stylesheets
     QStyleOption opt;
-    opt.init(this);
+    opt.initFrom(this);
     QPainter p(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 

@@ -15,6 +15,7 @@
 #include <QPainter>
 
 #include <QtMultimedia/QMediaPlayer>
+#include <QtMultimedia/QAudioOutput>
 #include <QUrl>
 
 namespace Ui {
@@ -45,6 +46,7 @@ private:
     QPropertyAnimation *fadeIn;
     QPropertyAnimation *fadeOut;
     QMediaPlayer *player;
+    QAudioOutput *audioOut;
     QShortcut* playShortcut;
 };
 
