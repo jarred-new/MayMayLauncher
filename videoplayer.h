@@ -5,6 +5,7 @@
 #include <QString>
 
 #include <QtMultimedia/QMediaPlayer>
+#include <QtMultimedia/QAudioOutput>
 #include <QUrl>
 #include <QtMultimediaWidgets/QVideoWidget>
 
@@ -46,6 +47,7 @@ private:
     QPropertyAnimation *fadeIn;
     QPropertyAnimation *fadeOut;
     QMediaPlayer *player;
+    QAudioOutput *audioOut;
     QVideoWidget *videoWidget;
     QShortcut* playShortcut;
     bool closing = false;

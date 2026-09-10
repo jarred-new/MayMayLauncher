@@ -3,7 +3,7 @@
 
 #include <QPixmap>
 #include <QPalette>
-#include <QTime>
+#include <QtGlobal>
 
 musicplayer::musicplayer(QString path, QWidget *parent) :
     QWidget(parent),
@@ -67,20 +67,25 @@ musicplayer::musicplayer(QString path, QWidget *parent) :
     // PLAYER SIGNALS -> UI WIDGETS
     // ----------------------------------------------------
     // Update progress slider track position as audio plays
-    connect(player, &QMediaPlayer::positionChanged, ui->horizontalSlider, &QSlider::setValue);
+    connect(player, &QMediaPlayer::positionChanged, this, [this](qint64 position) {
+        ui->horizontalSlider->setValue(
+            static_cast<int>(qBound<qint64>(0, position, INT_MAX)));
+    });
 
     connect(player, &QMediaPlayer::positionChanged, this, [this](qint64 position) {
-        int seconds = (position / 1000) % 60;
-        int minutes = (position / 60000) % 60;
-        int hours = (position / 3600000) % 24;
-
-        QTime time(hours, minutes, seconds);
-        ui->length->setText(time.toString("hh:mm:ss"));
+        const qint64 totalSeconds = qMax<qint64>(0, position / 1000);
+        const qint64 hours = totalSeconds / 3600;
+        const qint64 minutes = (totalSeconds / 60) % 60;
+        const qint64 seconds = totalSeconds % 60;
+        ui->length->setText(QString("%1:%2:%3")
+                            .arg(hours, 2, 10, QChar('0'))
+                            .arg(minutes, 2, 10, QChar('0'))
+                            .arg(seconds, 2, 10, QChar('0')));
     });
 
     // Update progress slider max boundary when a new file loads
     connect(player, &QMediaPlayer::durationChanged, this, [this](qint64 duration) {
-        ui->horizontalSlider->setRange(0, static_cast<int>(duration));
+        ui->horizontalSlider->setRange(0, static_cast<int>(qMin<qint64>(duration, INT_MAX)));
     });
 }
 
@@ -142,16 +147,10 @@ void musicplayer::on_rewind_clicked()
 
 void musicplayer::on_forward_clicked()
 {
-    // Get the current position in milliseconds
-    qint64 currentPos = player->position();
-
-    // Add 5 seconds (5,000 milliseconds)
-    qint64 targetPos = currentPos + 5000;
-
-    // Ensure we don't seek past the total duration of the media
-    if (targetPos < player->duration()) {
-        player->setPosition(targetPos);
-    } else {
-        player->setPosition(player->duration());
+    const qint64 duration = player->duration();
+    if (duration <= 0) {
+        return;
     }
+
+    player->setPosition(qMin(player->position() + 5000, duration));
 }

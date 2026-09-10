@@ -14,6 +14,7 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
+    midiplayer.cpp \
     musicplayer.cpp \
     videoplayer.cpp \
     pictureviewer.cpp \
@@ -22,6 +23,7 @@ SOURCES += main.cpp\
     settingsdialog.cpp
 
 HEADERS  += mainwindow.h \
+    midiplayer.h \
     musicplayer.h \
     videoplayer.h \
     pictureviewer.h \
@@ -31,6 +33,7 @@ HEADERS  += mainwindow.h \
     settingsdialog.h
 
 FORMS    += mainwindow.ui \
+    midiplayer.ui \
     musicplayer.ui \
     videoplayer.ui \
     pictureviewer.ui \

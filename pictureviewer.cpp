@@ -3,6 +3,7 @@
 
 #include <QPixmap>
 #include <QMovie>
+#include <QResizeEvent>
 #include <QSize>
 
 pictureviewer::pictureviewer(QString path, QWidget *parent) :
@@ -37,17 +38,16 @@ pictureviewer::pictureviewer(QString path, QWidget *parent) :
 
     if (!path.toLower().endsWith(".gif")) {
         pic = new QPixmap(path);
-
-        ui->pic->setPixmap(pic->scaled(
-                    ui->pic->size(),
-                    Qt::AspectRatioMode::KeepAspectRatio));
-
-        //ui->pic->setPixmap(pic);
+        ui->pic->setAlignment(Qt::AlignCenter);
+        ui->pic->setPixmap(pic->scaled(ui->pic->size(),
+                           Qt::KeepAspectRatio,
+                           Qt::SmoothTransformation));
     }
     else {
         gif = new QMovie(path);
 
         ui->pic->setMovie(gif);
+        ui->pic->setAlignment(Qt::AlignCenter);
         gif->start();
     }
 }
@@ -89,6 +89,16 @@ void pictureviewer::closeEvent(QCloseEvent *event)
     }
     fadeOut->start();
     event->ignore();
+}
+
+void pictureviewer::resizeEvent(QResizeEvent *event)
+{
+    if (pic && !pic->isNull()) {
+        ui->pic->setPixmap(pic->scaled(ui->pic->size(),
+                                       Qt::KeepAspectRatio,
+                                       Qt::SmoothTransformation));
+    }
+    QWidget::resizeEvent(event);
 }
 
 void pictureviewer::paintEvent(QPaintEvent *event)
