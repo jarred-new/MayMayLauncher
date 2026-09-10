@@ -46,12 +46,15 @@ RESOURCES += \
 RC_FILE += \
     resource.rc
 
-INCLUDEPATH += $$PWD/libmagic/include
-DEPENDPATH += $$PWD/libmagic/include
+INCLUDEPATH += $$PWD/libmagic/include \
+               $$PWD/fluidsynth/include
+DEPENDPATH += $$PWD/libmagic/include \
+              $$PWD/fluidsynth/include
 
 win32 {
     # Direct path linking bypasses the -l short-name resolution issues
     CONFIG(release, debug|release): LIBS += $$PWD/libmagic/lib/magic.lib
     else:CONFIG(debug, debug|release): LIBS += $$PWD/libmagic/debug/lib/magic.lib
+    LIBS        += -L"$$PWD/fluidsynth/lib/libfluidsynth-3.lib"
 }
 

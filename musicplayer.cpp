@@ -69,7 +69,7 @@ musicplayer::musicplayer(QString path, QWidget *parent) :
     // Update progress slider track position as audio plays
     connect(player, &QMediaPlayer::positionChanged, this, [this](qint64 position) {
         ui->horizontalSlider->setValue(
-            static_cast<int>(qBound<qint64>(0, position, INT_MAX)));
+            static_cast<int>(qBound<qint64>(qint64(0), position, qint64(INT_MAX))));
     });
 
     connect(player, &QMediaPlayer::positionChanged, this, [this](qint64 position) {

@@ -73,7 +73,7 @@ videoplayer::videoplayer(QString path, QWidget *parent) :
     // Update progress slider track position as audio plays
     connect(player, &QMediaPlayer::positionChanged, this, [this](qint64 position) {
         ui->horizontalSlider->setValue(
-            static_cast<int>(qBound<qint64>(0, position, INT_MAX)));
+            static_cast<int>(qBound<qint64>(qint64(0), position, qint64(INT_MAX))));
     });
 
     connect(player, &QMediaPlayer::positionChanged, this, [this](qint64 position) {
@@ -147,17 +147,15 @@ void videoplayer::paintEvent(QPaintEvent *event)
 
 void videoplayer::on_rewind_clicked()
 {
+    player->setPosition(qMax<qint64>(qint64(0), player->position() - 5000));
+}
+
+void videoplayer::on_forward_clicked()
+{
     const qint64 duration = player->duration();
     if (duration <= 0) {
         return;
     }
 
     player->setPosition(qMin(player->position() + 5000, duration));
-
-    // Ensure we don't seek past the total duration of the media
-    if (targetPos < player->duration()) {
-        player->setPosition(targetPos);
-    } else {
-        player->setPosition(player->duration());
-    }
 }
