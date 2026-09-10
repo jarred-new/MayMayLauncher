@@ -22,6 +22,8 @@
 #include <QFileDialog>
 
 #include <QMetaObject>
+#include <QApplication>
+#include <QUrl>
 
 #include <QFile>
 #include <QJsonDocument>
@@ -197,6 +199,70 @@ void MainWindow::changeProfileName()
     }
 }
 
+void MainWindow::setLauncherBg()
+{
+    QSettings settings("JarredApps", "MayMayLauncher");
+    QString backgroundPath = settings.value(
+                "Launcher/Background",
+                ":/bg/metro.jpg").toString();
+
+        if (!backgroundPath.startsWith(":/")
+            && !QFileInfo::exists(backgroundPath)) {
+        backgroundPath = ":/bg/metro.jpg";
+        }
+
+    QString backgroundUrl = backgroundPath.startsWith(":/")
+            ? backgroundPath
+            : QDir::fromNativeSeparators(backgroundPath);
+
+    for (QWidget *widget : QApplication::topLevelWidgets()) {
+        if (widget->objectName() == "MainWindow") {
+            QWidget *centralWidget = widget->findChild<QWidget*>("centralWidget");
+            if (centralWidget != nullptr) {
+                centralWidget->setStyleSheet(QString(
+                    "#centralWidget { border-image: url('%1') 0 0 0 0 stretch stretch; }")
+                    .arg(backgroundUrl));
+                centralWidget->update();
+            }
+        }
+        else if (widget->objectName() == "musicplayer"
+                 || widget->objectName() == "videoplayer"
+                 || widget->objectName() == "pictureviewer") {
+            widget->setStyleSheet(QString(
+                "#%1 { border-image: url('%2') 0 0 0 0 stretch stretch; }")
+                .arg(widget->objectName(), backgroundUrl));
+            widget->update();
+        }
+    }
+}
+
+void MainWindow::setLauncherBg_slot()
+{
+    MainWindow::setLauncherBg();
+}
+
+void MainWindow::changeBg()
+{
+    QString backgroundPath = QFileDialog::getOpenFileName(
+                this,
+                "Change BG",
+                QString(),
+                "Images (*.png *.jpg *.jpeg *.bmp *.gif)");
+
+    if (!backgroundPath.isEmpty()) {
+        QSettings settings("JarredApps", "MayMayLauncher");
+        settings.setValue("Launcher/Background", backgroundPath);
+        MainWindow::setLauncherBg();
+    }
+}
+
+void MainWindow::resetBg()
+{
+    QSettings settings("JarredApps", "MayMayLauncher");
+    settings.remove("Launcher/Background");
+    MainWindow::setLauncherBg();
+}
+
 MainWindow *MainWindow::instance = nullptr;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -206,6 +272,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     MainWindow::instance = this;
+    MainWindow::setLauncherBg();
 
     QSettings settings("JarredApps", "MayMayLauncher");
 
@@ -279,6 +346,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QMenu *contextMenu = new QMenu(this);
     QAction *aboutAction = contextMenu->addAction("About MayMayLauncher");
     QAction *settingsAction = contextMenu->addAction("Settings");
+    QMenu *changeBgMenu = contextMenu->addMenu("Change BG");
+    QAction *fromFileAction = changeBgMenu->addAction("From File...");
+    QAction *defaultBgAction = changeBgMenu->addAction("Default BG");
     QAction *testCrashAction = contextMenu->addAction("Test Crash \(for debug only\)");
         connect(aboutAction, &QAction::triggered, this, [this]() {
             QString htmlAbout;
@@ -330,6 +400,10 @@ MainWindow::MainWindow(QWidget *parent) :
             SettingsDialog settingsDlg(this);
             settingsDlg.exec();
         });
+        connect(fromFileAction, &QAction::triggered,
+                this, &MainWindow::changeBg);
+        connect(defaultBgAction, &QAction::triggered,
+            this, &MainWindow::resetBg);
         connect(testCrashAction, &QAction::triggered, this, []() {
             QMessageBox::StandardButton comfirm = QMessageBox::warning(nullptr,
                                                                        "Are you sure?",
@@ -558,10 +632,8 @@ void MainWindow::on_listView_doubleClicked(const QModelIndex &index)
             && settings.value("useMediaPlayer", true).toBool())) {
 
         musicplayer *player = new musicplayer(path, this);
-//        player->setStyleSheet("#musicplayer {"
-//                              "border-image: url(:/bg/metro.jpg) 0 0 0 0 stretch stretch;"
-//                              "}");
         player->show();
+        MainWindow::setLauncherBg();
     }
     else if (path.endsWith(".mp4")
              || path.endsWith(".avi")
@@ -572,10 +644,8 @@ void MainWindow::on_listView_doubleClicked(const QModelIndex &index)
              (fileMatchesCategory(path, "video")
              && settings.value("useMediaPlayer", true).toBool())) {
         videoplayer *player = new videoplayer(path, this);
-//        player->setStyleSheet("#videoplayer {"
-//                              "border-image: url(:/bg/metro.jpg) 0 0 0 0 stretch stretch;"
-//                              "}");
         player->show();
+        MainWindow::setLauncherBg();
     }
     else if (path.endsWith(".png")
              || path.endsWith(".jpg")
@@ -585,6 +655,7 @@ void MainWindow::on_listView_doubleClicked(const QModelIndex &index)
              && settings.value("useMediaPlayer", true).toBool())) {
         pictureviewer* picView = new pictureviewer(path, this);
         picView->show();
+        MainWindow::setLauncherBg();
     }
     else {
 //        executerbg* exe = new executerbg(path, this);

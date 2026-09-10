@@ -174,6 +174,133 @@ private:
     QString m_imagePath;
 };
 
+class BackgroundPage : public QWizardPage
+{
+    Q_OBJECT
+
+public:
+    BackgroundPage(QWidget *parent = 0)
+        : QWizardPage(parent)
+    {
+        setTitle("Background Image");
+        setSubTitle("Choose a background image for the launcher.");
+
+        previewLabel = new QLabel;
+        QPixmap bgPic(":/default/background.jpg");
+
+        previewLabel->setScaledContents(true);
+        previewLabel->setPixmap(
+            bgPic.scaled(
+                previewLabel->size(),
+                Qt::KeepAspectRatioByExpanding,
+                Qt::SmoothTransformation));
+
+        //previewLabel->setPixmap(QPixmap(":/default/profile.jpg"));
+        previewLabel->setFixedSize(128,128);
+        previewLabel->setAlignment(Qt::AlignCenter);
+        previewLabel->setFrameShape(QFrame::Box);
+
+        useDefault = new QCheckBox;
+        useDefault->setText("Use Default Background");
+
+        browseButton =
+            new QPushButton("Browse...");
+
+        connect(browseButton,
+                SIGNAL(clicked()),
+                this,
+                SLOT(selectImage()));
+
+        connect(useDefault,
+                SIGNAL(toggled(bool)),
+                this,
+                SLOT(onDefaultToggled(bool)));
+
+        QVBoxLayout *layout = new QVBoxLayout;
+
+        layout->addWidget(previewLabel,0,Qt::AlignCenter);
+        layout->addWidget(browseButton,0,Qt::AlignCenter);
+        layout->addWidget(useDefault, 0, Qt::AlignCenter);
+
+        setLayout(layout);
+    }
+
+    bool isComplete() const
+    {
+        return useDefault->isChecked() || !m_imagePath.isEmpty();
+    }
+
+private:
+    QLabel *previewLabel;
+    QCheckBox *useDefault;
+    QPushButton *browseButton;
+    QString m_imagePath;
+
+private slots:
+    void selectImage()
+    {
+        QString fileName =
+            QFileDialog::getOpenFileName(
+                this,
+                "Select Background Image",
+                QString(),
+                "Images (*.png *.jpg *.jpeg *.bmp *.gif)");
+
+        if(fileName.isEmpty())
+            return;
+
+        m_imagePath = fileName;
+
+        wizard()->setProperty(
+            "backgroundImage",
+            fileName);
+
+        QPixmap pix(fileName);
+
+        previewLabel->setScaledContents(true);
+        previewLabel->setPixmap(
+            pix.scaled(
+                previewLabel->size(),
+                Qt::KeepAspectRatioByExpanding,
+                Qt::SmoothTransformation));
+
+        emit completeChanged();
+    }
+
+    void onDefaultToggled(bool checked)
+    {
+        browseButton->setEnabled(!checked);
+
+        if (checked)
+        {
+            m_imagePath.clear();
+
+            QPixmap pix(":/default/background.jpg");
+
+            previewLabel->setScaledContents(true);
+            previewLabel->setPixmap(
+                pix.scaled(
+                    previewLabel->size(),
+                    Qt::KeepAspectRatioByExpanding,
+                    Qt::SmoothTransformation));
+
+            wizard()->setProperty(
+                "backgroundImage",
+                ":/default/background.jpg");
+        }
+        else
+        {
+            previewLabel->clear();
+
+            wizard()->setProperty(
+                "backgroundImage",
+                QString());
+        }
+
+        emit completeChanged();
+    }
+};
+
 class ConfirmationPage : public QWizardPage
 {
 public:
@@ -269,6 +396,7 @@ public:
         addPage(new IntroPage);
         addPage(new NicknamePage);
         addPage(new PicturePage);
+        addPage(new BackgroundPage);
         addPage(new ConfirmationPage);
         addPage(new ConclusionPage);
 

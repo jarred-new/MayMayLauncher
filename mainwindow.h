@@ -32,6 +32,7 @@ public:
     static void clearAllLists();
     static void exportLists();
     static void importLists();
+    static void setLauncherBg();
 
 //signals:
 //    void enterPressed(const QModelIndex &index);
@@ -54,6 +55,9 @@ protected:
 //    void on_MainWindow_destroyed();
 
 private slots:
+    void changeBg();
+    void resetBg();
+
     void on_pushButton_2_clicked();
 
     void on_pushButton_3_clicked();
@@ -68,6 +72,7 @@ public slots:
     void clearListView();
     bool exportStandardModelToJson(const QString& fileName);
     bool importJsonToStandardModel(const QString& fileName);
+    void setLauncherBg_slot();
 
 private:
     void loadList();

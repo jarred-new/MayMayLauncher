@@ -45,6 +45,10 @@ void createWizard() {
             wizard.property(
                 "profilePicture").toString();
 
+        QString background =
+            wizard.property(
+                "backgroundImage").toString();
+
         QSettings settings("JarredApps", "MayMayLauncher");
 
         settings.setValue(
@@ -54,6 +58,10 @@ void createWizard() {
         settings.setValue(
             "Profile/Picture",
             picture);
+
+        settings.setValue(
+            "Launcher/Background",
+            background);
 
 //        QMessageBox::information(
 //            NULL,
