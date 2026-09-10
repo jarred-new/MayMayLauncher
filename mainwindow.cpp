@@ -65,6 +65,7 @@ void MainWindow::loadList()
     int size = settings.beginReadArray("Files");
 
     QFileIconProvider iconProvider;
+    QStringList validPaths;
 
     for (int i = 0; i < size; i++)
     {
@@ -78,6 +79,8 @@ void MainWindow::loadList()
         if (!info.exists())
             continue;
 
+        validPaths.append(path);
+
         QStandardItem *item =
             new QStandardItem(
                 iconProvider.icon(info),
@@ -89,6 +92,15 @@ void MainWindow::loadList()
     }
 
     settings.endArray();
+
+    if (validPaths.size() != size) {
+        settings.beginWriteArray("Files");
+        for (int i = 0; i < validPaths.size(); ++i) {
+            settings.setArrayIndex(i);
+            settings.setValue("Path", validPaths.at(i));
+        }
+        settings.endArray();
+    }
 }
 
 void MainWindow::saveList()
@@ -625,34 +637,36 @@ void MainWindow::on_listView_doubleClicked(const QModelIndex &index)
     // Open the file with the default application associated with its type.
     // Media apps will be viewed on the built-in media player
 
-    if (path.endsWith(".mp3")
-            || path.endsWith(".wav")
-            || path.endsWith(".ogg") ||
-            (fileMatchesCategory(path, "audio")
-            && settings.value("useMediaPlayer", true).toBool())) {
+        QString lowerPath = path.toLower();
+        bool useMediaPlayer = settings.value("useMediaPlayer", true).toBool();
+
+        if (useMediaPlayer &&
+            (lowerPath.endsWith(".mp3")
+            || lowerPath.endsWith(".wav")
+            || lowerPath.endsWith(".ogg")
+            || fileMatchesCategory(path, "audio"))) {
 
         musicplayer *player = new musicplayer(path, this);
         player->show();
         MainWindow::setLauncherBg();
     }
-    else if (path.endsWith(".mp4")
-             || path.endsWith(".avi")
-             || path.endsWith(".mpg")
-             || path.endsWith(".mkv")
-             || path.endsWith(".flv")
-             || path.endsWith(".avi") ||
-             (fileMatchesCategory(path, "video")
-             && settings.value("useMediaPlayer", true).toBool())) {
+    else if (useMediaPlayer &&
+             (lowerPath.endsWith(".mp4")
+             || lowerPath.endsWith(".avi")
+             || lowerPath.endsWith(".mpg")
+             || lowerPath.endsWith(".mkv")
+             || lowerPath.endsWith(".flv")
+             || fileMatchesCategory(path, "video"))) {
         videoplayer *player = new videoplayer(path, this);
         player->show();
         MainWindow::setLauncherBg();
     }
-    else if (path.endsWith(".png")
-             || path.endsWith(".jpg")
-             || path.endsWith(".jpeg")
-             || path.endsWith(".gif") ||
-             (fileMatchesCategory(path, "image")
-             && settings.value("useMediaPlayer", true).toBool())) {
+    else if (useMediaPlayer &&
+             (lowerPath.endsWith(".png")
+             || lowerPath.endsWith(".jpg")
+             || lowerPath.endsWith(".jpeg")
+             || lowerPath.endsWith(".gif")
+             || fileMatchesCategory(path, "image"))) {
         pictureviewer* picView = new pictureviewer(path, this);
         picView->show();
         MainWindow::setLauncherBg();
@@ -754,6 +768,8 @@ bool MainWindow::importJsonToStandardModel(const QString &fileName)
         doc.object()["files"].toArray();
 
     QFileIconProvider iconProvider;
+
+    m_model->removeRows(0, m_model->rowCount());
 
     foreach (QJsonValue value, files)
     {

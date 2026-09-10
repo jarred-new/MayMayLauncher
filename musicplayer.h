@@ -48,6 +48,7 @@ private:
     QMediaPlayer *player;
     QAudioOutput *audioOut;
     QShortcut* playShortcut;
+    bool closing = false;
 };
 
 #endif // MUSICPLAYER_H

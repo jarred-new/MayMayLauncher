@@ -10,6 +10,7 @@ musicplayer::musicplayer(QString path, QWidget *parent) :
     ui(new Ui::musicplayer)
 {
     ui->setupUi(this);
+    setAttribute(Qt::WA_DeleteOnClose);
     this->setWindowFlags(Qt::Window | Qt::WindowStaysOnBottomHint);
     this->setWindowState(Qt::WindowFullScreen);
 
@@ -23,7 +24,6 @@ musicplayer::musicplayer(QString path, QWidget *parent) :
     fadeOut->setDuration(500);
     fadeOut->setStartValue(1.0);
     fadeOut->setEndValue(0.0);
-    fadeOut->start();
 
 //    QPixmap bkgnd("qrc:/bg/metro.jpg");
 //    bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
@@ -41,7 +41,7 @@ musicplayer::musicplayer(QString path, QWidget *parent) :
     audioOut = new QAudioOutput(this);
     player->setAudioOutput(audioOut);
     player->setSource(QUrl::fromLocalFile(path));
-    audioOut->setVolume(100); // Volume between 0 and 100
+    audioOut->setVolume(1.0); // QAudioOutput uses a normalized 0.0-1.0 scale
     player->play();
 
     connect(ui->play, SIGNAL(clicked()), player, SLOT(play()));
@@ -91,14 +91,22 @@ musicplayer::~musicplayer()
 }
 
 void musicplayer::showEvent(QShowEvent *event) {
+    closing = false;
+    fadeOut->stop();
     fadeIn->start();
     QWidget::showEvent(event);
 }
 
 void musicplayer::closeEvent(QCloseEvent *event) {
+    if (closing) {
+        event->accept();
+        return;
+    }
+
+    closing = true;
     player->stop();
     fadeOut->start();
-    QWidget::closeEvent(event);
+    event->ignore();
 }
 
 void musicplayer::paintEvent(QPaintEvent *event)

@@ -16,6 +16,9 @@ namespace Ui {
 class pictureviewer;
 }
 
+class QMovie;
+class QPixmap;
+
 class pictureviewer : public QWidget
 {
     Q_OBJECT
@@ -33,8 +36,9 @@ private:
     Ui::pictureviewer *ui;
     QPropertyAnimation *fadeIn;
     QPropertyAnimation *fadeOut;
-    QMovie *gif;
-    QPixmap *pic;
+    QMovie *gif = nullptr;
+    QPixmap *pic = nullptr;
+    bool closing = false;
 };
 
 #endif // PICTUREVIEWER_H

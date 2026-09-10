@@ -48,6 +48,7 @@ private:
     QMediaPlayer *player;
     QVideoWidget *videoWidget;
     QShortcut* playShortcut;
+    bool closing = false;
 };
 
 #endif // VIDEOPLAYER_H

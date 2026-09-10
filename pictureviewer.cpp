@@ -10,6 +10,7 @@ pictureviewer::pictureviewer(QString path, QWidget *parent) :
     ui(new Ui::pictureviewer)
 {
     ui->setupUi(this);
+    setAttribute(Qt::WA_DeleteOnClose);
     this->setWindowFlags(Qt::Window | Qt::WindowStaysOnBottomHint);
     this->setWindowState(Qt::WindowFullScreen);
 
@@ -23,7 +24,6 @@ pictureviewer::pictureviewer(QString path, QWidget *parent) :
     fadeOut->setDuration(500);
     fadeOut->setStartValue(1.0);
     fadeOut->setEndValue(0.0);
-    fadeOut->start();
 
 //    QPixmap bkgnd("qrc:/bg/metro.jpg");
 //    bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
@@ -35,7 +35,7 @@ pictureviewer::pictureviewer(QString path, QWidget *parent) :
     // Disconnect/delete when finished or simply trigger close on completion
     connect(fadeOut, &QPropertyAnimation::finished, this, &QWidget::close);
 
-    if (!path.endsWith(".gif")) {
+    if (!path.toLower().endsWith(".gif")) {
         pic = new QPixmap(path);
 
         ui->pic->setPixmap(pic->scaled(
@@ -66,12 +66,20 @@ pictureviewer::~pictureviewer()
 
 void pictureviewer::showEvent(QShowEvent *event)
 {
+    closing = false;
+    fadeOut->stop();
     fadeIn->start();
     QWidget::showEvent(event);
 }
 
 void pictureviewer::closeEvent(QCloseEvent *event)
 {
+    if (closing) {
+        event->accept();
+        return;
+    }
+
+    closing = true;
     if (pic) {
         ui->pic->clear();
     }
@@ -80,7 +88,7 @@ void pictureviewer::closeEvent(QCloseEvent *event)
         //gif->deleteLater();
     }
     fadeOut->start();
-    QWidget::closeEvent(event);
+    event->ignore();
 }
 
 void pictureviewer::paintEvent(QPaintEvent *event)

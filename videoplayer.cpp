@@ -10,6 +10,7 @@ videoplayer::videoplayer(QString path, QWidget *parent) :
     ui(new Ui::videoplayer)
 {
     ui->setupUi(this);
+    setAttribute(Qt::WA_DeleteOnClose);
 
     this->setWindowFlags(Qt::Window | Qt::WindowStaysOnBottomHint);
     this->setWindowState(Qt::WindowFullScreen);
@@ -24,7 +25,6 @@ videoplayer::videoplayer(QString path, QWidget *parent) :
     fadeOut->setDuration(500);
     fadeOut->setStartValue(1.0);
     fadeOut->setEndValue(0.0);
-    fadeOut->start();
 
 //    QPixmap bkgnd("qrc:/bg/metro.jpg");
 //    bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
@@ -94,15 +94,23 @@ videoplayer::~videoplayer()
 
 void videoplayer::showEvent(QShowEvent *event)
 {
+    closing = false;
+    fadeOut->stop();
     fadeIn->start();
     QWidget::showEvent(event);
 }
 
 void videoplayer::closeEvent(QCloseEvent *event)
 {
+    if (closing) {
+        event->accept();
+        return;
+    }
+
+    closing = true;
     player->stop();
     fadeOut->start();
-    QWidget::closeEvent(event);
+    event->ignore();
 }
 
 void videoplayer::paintEvent(QPaintEvent *event)

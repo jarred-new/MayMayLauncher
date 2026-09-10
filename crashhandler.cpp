@@ -6,6 +6,7 @@
 
 #include <signal.h>
 #include <exception>
+#include <cstdlib>
 
 CrashHandler::CrashHandler()
 {
@@ -26,47 +27,14 @@ void CrashHandler::install()
             "std::terminate() was called."
         );
 
-        abort();
+        std::_Exit(EXIT_FAILURE);
     });
 }
 
 void CrashHandler::signalHandler(int signal)
 {
-    QString text;
-
-    text += "Application crashed.\n\n";
-    text += "Date: "
-            + QDateTime::currentDateTime()
-                  .toString()
-            + "\n\n";
-
-    switch(signal)
-    {
-        case SIGSEGV:
-            text += "Signal: SIGSEGV\n";
-            text += "Access violation.\n";
-            break;
-
-        case SIGABRT:
-            text += "Signal: SIGABRT\n";
-            break;
-
-        case SIGFPE:
-            text += "Signal: SIGFPE\n";
-            break;
-
-        case SIGILL:
-            text += "Signal: SIGILL\n";
-            break;
-
-        default:
-            text += "Unknown signal.\n";
-            break;
-    }
-
-    showCrashDialog(text);
-
-    exit(signal);
+    Q_UNUSED(signal);
+    std::_Exit(EXIT_FAILURE);
 }
 
 void CrashHandler::showCrashDialog(const QString &text)
