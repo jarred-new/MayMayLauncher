@@ -4,6 +4,7 @@
 #include <QPixmap>
 #include <QPalette>
 #include <QtGlobal>
+#include <QFileInfo>
 
 musicplayer::musicplayer(QString path, QWidget *parent) :
     QWidget(parent),
@@ -35,7 +36,7 @@ musicplayer::musicplayer(QString path, QWidget *parent) :
     // Disconnect/delete when finished or simply trigger close on completion
     connect(fadeOut, &QPropertyAnimation::finished, this, &QWidget::close);
 
-    ui->label->setText(path);
+    ui->label->setText(QFileInfo(path).fileName());
 
     player = new QMediaPlayer(this);
     audioOut = new QAudioOutput(this);
