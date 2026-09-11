@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "musicplayer.h"
+#include "midiplayer.h"
 #include "videoplayer.h"
 #include "pictureviewer.h"
 #include "settingsdialog.h"
@@ -239,7 +240,8 @@ void MainWindow::setLauncherBg()
         }
         else if (widget->objectName() == "musicplayer"
                  || widget->objectName() == "videoplayer"
-                 || widget->objectName() == "pictureviewer") {
+                 || widget->objectName() == "pictureviewer"
+                 || widget->objectName() == "midiplayer") {
             widget->setStyleSheet(QString(
                 "#%1 { border-image: url('%2') 0 0 0 0 stretch stretch; }")
                 .arg(widget->objectName(), backgroundUrl));
@@ -641,6 +643,12 @@ void MainWindow::on_listView_doubleClicked(const QModelIndex &index)
         bool useMediaPlayer = settings.value("useMediaPlayer", true).toBool();
 
         if (useMediaPlayer &&
+                (lowerPath.endsWith(".mid") || lowerPath.endsWith(".midi"))) {
+            midiplayer *player = new midiplayer(path, this);
+            player->show();
+            MainWindow::setLauncherBg();
+        }
+        else if (useMediaPlayer &&
             (lowerPath.endsWith(".mp3")
             || lowerPath.endsWith(".wav")
             || lowerPath.endsWith(".ogg")

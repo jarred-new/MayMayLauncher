@@ -55,6 +55,12 @@ win32 {
     # Direct path linking bypasses the -l short-name resolution issues
     CONFIG(release, debug|release): LIBS += $$PWD/libmagic/lib/magic.lib
     else:CONFIG(debug, debug|release): LIBS += $$PWD/libmagic/debug/lib/magic.lib
-    LIBS        += -L"$$PWD/fluidsynth/lib/libfluidsynth-3.lib"
+    LIBS        += "$$PWD/fluidsynth/lib/libfluidsynth-3.lib"
+
+    CONFIG(release, debug|release) {
+        QMAKE_POST_LINK += $$QMAKE_COPY "$$PWD/fluidsynth/bin/libfluidsynth-3.dll" "$$OUT_PWD/release" $$escape_expand(\n\t)
+        QMAKE_POST_LINK += $$QMAKE_COPY "$$PWD/fluidsynth/bin/sndfile.dll" "$$OUT_PWD/release" $$escape_expand(\n\t)
+        QMAKE_POST_LINK += $$QMAKE_COPY "$$PWD/fluidsynth/bin/SDL3.dll" "$$OUT_PWD/release"
+    }
 }
 

@@ -32,6 +32,12 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
         ui->radioButton->setChecked(false);
         ui->radioButton_2->setChecked(true);
     }
+
+    ui->lineEdit->setText(
+        settings.value("Midi/SoundFont",
+                       QCoreApplication::applicationDirPath() + "/midi/soundfonts/default.sf2"
+                       ).toString()
+    );
 }
 
 SettingsDialog::~SettingsDialog()
@@ -77,6 +83,8 @@ void SettingsDialog::on_buttonBox_accepted()
 
     settings.setValue("skip_warning_msg", skip_warning_msg);
     settings.setValue("useMediaPlayer", useMediaPlayer);
+
+    settings.setValue("Midi/SoundFont", ui->lineEdit->text());
 }
 
 
@@ -163,3 +171,35 @@ void SettingsDialog::on_pushButton_6_clicked()
 {
     ShellExecuteW(NULL, L"open", L"https://github.com/jarred-new/MayMayLauncher/releases", NULL, NULL, SW_SHOW);
 }
+
+void SettingsDialog::on_pushButton_7_clicked()
+{
+    //QSettings settings("JarredApps", "MayMayLauncher");
+    QMessageBox::StandardButton comfirmDefault = QMessageBox::question(this,
+                                                                       "Are you sure?",
+                                                                       "<h1>Do you want to use default soundfont?</h1>",
+                                                                       QMessageBox::Yes | QMessageBox::No);
+
+    if (comfirmDefault == QMessageBox::Yes) {
+        // settings.setValue("Midi/SoundFont",
+        //                   QCoreApplication::applicationDirPath() + "/midi/soundfonts/default.sf2");
+        ui->lineEdit->setText(
+            QCoreApplication::applicationDirPath() + "/midi/soundfonts/default.sf2"
+        );
+    }
+}
+
+
+void SettingsDialog::on_pushButton_8_clicked()
+{
+    //QSettings settings("JarredApps", "MayMayLauncher");
+    QString soundFont = QFileDialog::getOpenFileName(
+        this, "Open SoundFont", QString(),
+        "SoundFonts (*.sf2 *.sf3)");
+
+    if (!soundFont.isEmpty()) {
+        // settings.setValue("Midi/SoundFont", soundFont);
+        ui->lineEdit->setText(soundFont);
+    }
+}
+

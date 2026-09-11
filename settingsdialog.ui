@@ -49,10 +49,10 @@ QPushButton:active {
 }</string>
    </property>
    <property name="orientation">
-    <enum>Qt::Horizontal</enum>
+    <enum>Qt::Orientation::Horizontal</enum>
    </property>
    <property name="standardButtons">
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+    <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
    </property>
   </widget>
   <widget class="QTabWidget" name="tabWidget">
@@ -108,10 +108,10 @@ QTabBar::tab {
 </string>
    </property>
    <property name="tabPosition">
-    <enum>QTabWidget::North</enum>
+    <enum>QTabWidget::TabPosition::North</enum>
    </property>
    <property name="tabShape">
-    <enum>QTabWidget::Rounded</enum>
+    <enum>QTabWidget::TabShape::Rounded</enum>
    </property>
    <property name="currentIndex">
     <number>0</number>
@@ -194,7 +194,7 @@ QTabBar::tab {
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>130</y>
+       <y>200</y>
        <width>361</width>
        <height>41</height>
       </rect>
@@ -237,7 +237,7 @@ QPushButton:active {
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>180</y>
+       <y>250</y>
        <width>361</width>
        <height>41</height>
       </rect>
@@ -291,6 +291,109 @@ QPushButton:active {
      <property name="text">
       <string>Show Minimize Warning</string>
      </property>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>130</y>
+       <width>361</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Midi Soundfont:</string>
+     </property>
+     <widget class="QPushButton" name="pushButton_7">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>30</y>
+        <width>80</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	box-shadow:inset 0px 1px 0px 0px #d9fbbe;
+	background:linear-gradient(to bottom, #b8e356 5%, #a5cc52 100%);
+	background-color:#b8e356;
+	border-radius:6px;
+	border:1px solid #83c41a;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:12px;
+	font-weight:bold;
+	padding:0px 0px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #86ae47;
+}
+QPushButton:hover {
+	background:linear-gradient(to bottom, #a5cc52 5%, #b8e356 100%);
+	background-color:#a5cc52;
+}
+QPushButton:active {
+	position:relative;
+	top:1px;
+}
+</string>
+      </property>
+      <property name="text">
+       <string>Default</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_8">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>30</y>
+        <width>41</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	box-shadow:inset 0px 1px 0px 0px #d9fbbe;
+	background:linear-gradient(to bottom, #b8e356 5%, #a5cc52 100%);
+	background-color:#b8e356;
+	border-radius:6px;
+	border:1px solid #83c41a;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:12px;
+	font-weight:bold;
+	padding:0px 0px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #86ae47;
+}
+QPushButton:hover {
+	background:linear-gradient(to bottom, #a5cc52 5%, #b8e356 100%);
+	background-color:#a5cc52;
+}
+QPushButton:active {
+	position:relative;
+	top:1px;
+}
+</string>
+      </property>
+      <property name="text">
+       <string>...</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>201</width>
+        <height>24</height>
+       </rect>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QWidget" name="itemsTab">
@@ -475,7 +578,6 @@ QPushButton:active {
      <property name="font">
       <font>
        <pointsize>20</pointsize>
-       <weight>75</weight>
        <bold>true</bold>
       </font>
      </property>
@@ -483,7 +585,7 @@ QPushButton:active {
       <string>Current Version: 1.0</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_6">
@@ -560,7 +662,7 @@ QPushButton:active {
     </rect>
    </property>
    <property name="orientation">
-    <enum>Qt::Horizontal</enum>
+    <enum>Qt::Orientation::Horizontal</enum>
    </property>
   </widget>
  </widget>
