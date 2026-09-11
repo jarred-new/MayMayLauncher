@@ -56,6 +56,17 @@ midiplayer::midiplayer(const QString &path, QWidget *parent)
     fadeOut->setEndValue(0.0);
     connect(fadeOut, &QPropertyAnimation::finished, this, &QWidget::close);
 
+    // Shortcut
+    playShortcut = new QShortcut(QKeySequence(Qt::Key_Space), this);
+    playShortcut->setContext(Qt::ApplicationShortcut);
+    connect(playShortcut, &QShortcut::activated, this, [this]() {
+        if (player->playbackState() == QMediaPlayer::PlayingState) {
+            emit player->pause();
+        } else {
+            emit player->play();
+        }
+    });
+
     connect(ui->play, &QPushButton::clicked, this, &midiplayer::play);
     connect(ui->pause, &QPushButton::clicked, this, &midiplayer::pause);
     connect(ui->rewind, &QPushButton::clicked, this, &midiplayer::rewind);
@@ -76,6 +87,7 @@ midiplayer::midiplayer(const QString &path, QWidget *parent)
 midiplayer::~midiplayer()
 {
     stopPlayback();
+    delete playShortcut;
     delete ui;
 }
 

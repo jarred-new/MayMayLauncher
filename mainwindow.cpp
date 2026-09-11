@@ -369,20 +369,28 @@ MainWindow::MainWindow(QWidget *parent) :
 
             htmlAbout.append("<h1>MayMayLauncher</h1>");
             htmlAbout.append("</br>");
-            htmlAbout.append("<p>Version 1.0</p>");
+            htmlAbout.append("<p>Version 2.0 (beta)</p>");
             htmlAbout.append("</br>");
             htmlAbout.append("<p>Created by: Jarred</p>");
 
             htmlAbout.append("<h3>Open Source Libraries:</h3>");
+
+            // libmagic
             htmlAbout.append("<h4>File/libmagic</h4></br></p>");
             htmlAbout.append("Copyright (c) Ian F. Darwin 1986-1995.</br>Software written by Ian F. Darwin and others;</br>");
             htmlAbout.append("maintained by Christos Zoulas.</br>This product includes software developed by Christos Zoulas and others.</br>");
-            htmlAbout.append("Licensed under the BSD 2-Clause License.</p>");
+            htmlAbout.append("Licensed under the BSD 2-Clause License.</p><br>");
+
+            // FluidSynth
+            htmlAbout.append("<h4>FluidSynth</h4></br></p>");
+            htmlAbout.append("Copyright (c) Peter Hanappe 2000-2026.</br>Software written by Peter Hanappe and others;</br>");
+            htmlAbout.append("maintained by the FluidSynth Development Team.</br>This product includes software developed by FluidSynth and others.</br>");
+            htmlAbout.append("Licensed under the GNU Lesser General Public License v2.1 or later.</p>");
 
             QMessageBox aboutBox;
 
-            //aboutBox.setWindowTitle("About MayMayLauncher (prerelease)"); //prerelease
-            aboutBox.setWindowTitle("About MayMayLauncher");
+            aboutBox.setWindowTitle("About MayMayLauncher (prerelease)"); //prerelease
+            //aboutBox.setWindowTitle("About MayMayLauncher");
             aboutBox.setInformativeText(htmlAbout);
 
             QPushButton* okButton = aboutBox.addButton(QMessageBox::Ok);

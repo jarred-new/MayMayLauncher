@@ -10,6 +10,7 @@
 
 #include <QCloseEvent>
 #include <QShowEvent>
+#include <QShortcut>
 #include <QTimer>
 #include <QPropertyAnimation>
 
@@ -52,6 +53,7 @@ private:
     QPropertyAnimation *fadeIn;
     QPropertyAnimation *fadeOut;
     QTimer *positionTimer;
+    QShortcut *playShortcut;
     fluid_settings_t *settings;
     fluid_synth_t *synth;
     fluid_audio_driver_t *audioDriver;
