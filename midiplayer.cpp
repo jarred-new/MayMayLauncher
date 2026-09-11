@@ -267,6 +267,18 @@ void midiplayer::closeEvent(QCloseEvent *event)
     event->ignore();
 }
 
+void midiplayer::paintEvent(QPaintEvent *event)
+{
+    // This boiler-plate code enables custom QWidget stylesheets
+    QStyleOption opt;
+    opt.initFrom(this);
+    QPainter p(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+
+    // Always call the base class implementation if needed
+    QWidget::paintEvent(event);
+}
+
 void midiplayer::showEvent(QShowEvent *event)
 {
     closing = false;

@@ -3,6 +3,11 @@
 
 #include <QWidget>
 #include <QString>
+
+#include <QPaintEvent>
+#include <QStyleOption>
+#include <QPainter>
+
 #include <QCloseEvent>
 #include <QShowEvent>
 #include <QTimer>
@@ -27,6 +32,7 @@ public:
 protected:
     void showEvent(QShowEvent *event) override;
     void closeEvent(QCloseEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
 
 private slots:
     void updatePosition();
