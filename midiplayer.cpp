@@ -60,10 +60,12 @@ midiplayer::midiplayer(const QString &path, QWidget *parent)
     playShortcut = new QShortcut(QKeySequence(Qt::Key_Space), this);
     playShortcut->setContext(Qt::ApplicationShortcut);
     connect(playShortcut, &QShortcut::activated, this, [this]() {
-        if (player->playbackState() == QMediaPlayer::PlayingState) {
-            emit player->pause();
-        } else {
-            emit player->play();
+        if (midiPlayer) {
+            if (fluid_player_get_status(midiPlayer) == FLUID_PLAYER_PLAYING) {
+                emit pause();
+            } else {
+                emit play();
+            }
         }
     });
 
