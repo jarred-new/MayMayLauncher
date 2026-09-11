@@ -72,6 +72,5 @@ That's how you use it.
 </br>Update Settings tab
 
 ## ⚠️ Minimum Requirements
-* Windows 7 32-64bit and above
-* Visual C++ 2013 Redistributable x86
-
+* Windows 7 64bit and above
+* Visual C++ 2015-2022 Redistributable x64
