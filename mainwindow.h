@@ -16,6 +16,8 @@
 #include <QStandardItem>
 #include <QSettings>
 #include <QDesktopServices>
+#include <QLineEdit>
+#include <QShortcut>
 
 namespace Ui {
 class MainWindow;
@@ -77,11 +79,13 @@ public slots:
 private:
     void loadList();
     void saveList();
+    void filterLauncherList(const QString &text);
 
 private:
     Ui::MainWindow *ui;
     static MainWindow *instance; // Add a static pointer
     QStandardItemModel *m_model;
+    QLineEdit *searchBox;
 };
 
 #endif // MAINWINDOW_H

@@ -297,6 +297,34 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->listView->setModel(m_model);
 
+    searchBox = new QLineEdit(this);
+    searchBox->setObjectName("launcherSearchBox");
+    searchBox->setPlaceholderText("Search games, apps, music, videos, and pictures...");
+    searchBox->setClearButtonEnabled(true);
+    searchBox->setToolTip("Type to filter your launcher list. Press Enter to open the selected item.");
+    searchBox->setStyleSheet(
+        "QLineEdit { background: rgba(255, 255, 255, 220); color: #202020; "
+        "border: 1px solid rgba(255, 255, 255, 180); border-radius: 6px; "
+        "padding: 8px 12px; font-size: 14px; }"
+        "QLineEdit:focus { border: 2px solid #b8e356; padding: 7px 11px; }");
+    ui->verticalLayout->insertWidget(3, searchBox);
+
+    connect(searchBox, &QLineEdit::textChanged,
+            this, &MainWindow::filterLauncherList);
+    connect(searchBox, &QLineEdit::returnPressed, this, [this]() {
+        const QModelIndex index = ui->listView->currentIndex();
+        if (index.isValid()) {
+            on_listView_doubleClicked(index);
+        }
+    });
+
+    QShortcut *searchShortcut = new QShortcut(QKeySequence("Ctrl+F"), this);
+    searchShortcut->setContext(Qt::WindowShortcut);
+    connect(searchShortcut, &QShortcut::activated, this, [this]() {
+        searchBox->setFocus();
+        searchBox->selectAll();
+    });
+
     if (settings.value("viewMode", "icons").toString()
             == "icons") {
         ui->listView->setViewMode(QListView::IconMode);
@@ -594,6 +622,8 @@ void MainWindow::on_pushButton_2_clicked()
 
         saveList();
     }
+
+    filterLauncherList(searchBox->text());
 }
 
 void MainWindow::on_pushButton_3_clicked()
@@ -614,6 +644,32 @@ void MainWindow::on_pushButton_3_clicked()
         m_model->removeRow(index.row());
 
         saveList();
+    }
+}
+
+void MainWindow::filterLauncherList(const QString &text)
+{
+    const QString query = text.trimmed();
+    int firstVisibleRow = -1;
+
+    for (int row = 0; row < m_model->rowCount(); ++row) {
+        const QStandardItem *item = m_model->item(row);
+        const QString fileName = item->text();
+        const QString path = item->data(Qt::UserRole).toString();
+        const bool matches = query.isEmpty()
+            || fileName.contains(query, Qt::CaseInsensitive)
+            || path.contains(query, Qt::CaseInsensitive);
+
+        ui->listView->setRowHidden(row, !matches);
+        if (matches && firstVisibleRow < 0) {
+            firstVisibleRow = row;
+        }
+    }
+
+    if (firstVisibleRow >= 0) {
+        ui->listView->setCurrentIndex(m_model->index(firstVisibleRow, 0));
+    } else {
+        ui->listView->clearSelection();
     }
 }
 
@@ -807,6 +863,7 @@ bool MainWindow::importJsonToStandardModel(const QString &fileName)
     }
 
     this->saveList();
+    filterLauncherList(searchBox->text());
 
     QMessageBox::information(this,
                              "Imported Successfully!",

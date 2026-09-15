@@ -28,6 +28,10 @@ Note: all files will be removed when a file is not found.
 
 Double click on the item or select the item and press enter to open your file.
 
+Press **Ctrl+F** to search your launcher list by file name or path. Type a title,
+then press **Enter** to launch the selected result. This is useful when the list
+contains many games, apps, or media files.
+
 That's how you use it.
 
 ## 📸 Screenshots
