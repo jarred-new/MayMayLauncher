@@ -59,6 +59,9 @@ midiplayer::midiplayer(const QString &path, QWidget *parent)
     fadeOut->setEndValue(0.0);
     connect(fadeOut, &QPropertyAnimation::finished, this, &QWidget::close);
 
+    // Default Volume to 100% (1.0) and set the dial to match
+    fluid_synth_set_gain(synth, static_cast<float>(ui->dial->value()) / 100.0f);
+
     // Shortcut
     playShortcut = new QShortcut(QKeySequence(Qt::Key_Space), this);
     playShortcut->setContext(Qt::ApplicationShortcut);

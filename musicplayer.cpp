@@ -45,7 +45,7 @@ musicplayer::musicplayer(QString path, QWidget *parent) :
     audioOut = new QAudioOutput(this);
     player->setAudioOutput(audioOut);
     player->setSource(QUrl::fromLocalFile(path));
-    audioOut->setVolume(1.0); // QAudioOutput uses a normalized 0.0-1.0 scale
+    audioOut->setVolume(static_cast<float>(ui->dial->value()) / 100.0f); // QAudioOutput uses a normalized 0.0-1.0 scale
     player->play();
 
     connect(ui->play, SIGNAL(clicked()), player, SLOT(play()));

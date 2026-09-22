@@ -42,7 +42,7 @@ videoplayer::videoplayer(QString path, QWidget *parent) :
     audioOut = new QAudioOutput(this);
     videoWidget = new QVideoWidget(this);
 
-    audioOut->setVolume(1.0);
+    audioOut->setVolume(static_cast<float>(ui->dial->value()) / 100.0f);
     player->setAudioOutput(audioOut);
     player->setVideoOutput(videoWidget);
 
