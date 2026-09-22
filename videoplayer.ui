@@ -63,7 +63,7 @@ QPushButton:active {
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -140,7 +140,7 @@ QSlider::handle:horizontal:pressed {
 </string>
         </property>
         <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+         <enum>Qt::Orientation::Horizontal</enum>
         </property>
        </widget>
       </item>
@@ -150,7 +150,6 @@ QSlider::handle:horizontal:pressed {
          <font>
           <family>Arial</family>
           <pointsize>12</pointsize>
-          <weight>75</weight>
           <bold>true</bold>
          </font>
         </property>
@@ -161,6 +160,19 @@ QSlider::handle:horizontal:pressed {
         </property>
         <property name="text">
          <string>00:00:00</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDial" name="dial">
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="singleStep">
+         <number>10</number>
+        </property>
+        <property name="value">
+         <number>100</number>
         </property>
        </widget>
       </item>

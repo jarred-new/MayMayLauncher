@@ -84,6 +84,12 @@ musicplayer::musicplayer(QString path, QWidget *parent) :
                             .arg(seconds, 2, 10, QChar('0')));
     });
 
+    connect(ui->dial, &QDial::valueChanged, this, [this](int value) {
+        if (audioOut) {
+            audioOut->setVolume(static_cast<float>(value) / 100.0f);
+        }
+    });
+
     // Update progress slider max boundary when a new file loads
     connect(player, &QMediaPlayer::durationChanged, this, [this](qint64 duration) {
         ui->horizontalSlider->setRange(0, static_cast<int>(qMin<qint64>(duration, INT_MAX)));

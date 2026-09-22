@@ -76,6 +76,11 @@ midiplayer::midiplayer(const QString &path, QWidget *parent)
     connect(ui->horizontalSlider, &QSlider::sliderMoved,
             this, &midiplayer::setPosition);
     connect(positionTimer, &QTimer::timeout, this, &midiplayer::updatePosition);
+    connect(ui->dial, &QDial::valueChanged, this, [this](int value) {
+        if (synth) {
+            fluid_synth_set_gain(synth, static_cast<float>(value) / 100.0f);
+        }
+    });
     positionTimer->start(100);
 
     if (!initializeSynth(path)) {
