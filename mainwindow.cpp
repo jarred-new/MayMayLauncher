@@ -462,8 +462,10 @@ MainWindow::MainWindow(QWidget *parent) :
                                                                        QMessageBox::Yes | QMessageBox::No);
 
             if (comfirm == QMessageBox::Yes) {
-                int *ptr = 0;
-                *ptr = 123; // SIGSEGV
+                RaiseException(EXCEPTION_ACCESS_VIOLATION,
+                               0,
+                               0,
+                               nullptr);
             }
         });
     ui->toolButton->setMenu(contextMenu);
@@ -572,8 +574,6 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 
         // Intercept Shift + Left Click
         if (mouseEvent->button() == Qt::LeftButton && (mouseEvent->modifiers() & Qt::ShiftModifier)) {
-            QPushButton *clickedButton = qobject_cast<QPushButton*>(obj);
-
             QPixmap profilePic(":/default/secretprofile.jpg");
 
             ui->profile->setScaledContents(true);
@@ -842,8 +842,9 @@ bool MainWindow::importJsonToStandardModel(const QString &fileName)
     if (!doc.isObject())
         return false;
 
+    QJsonObject root = doc.object();
     QJsonArray files =
-        doc.object()["files"].toArray();
+        root.value("files").toArray();
 
     QFileIconProvider iconProvider;
 
