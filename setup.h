@@ -275,7 +275,7 @@ private slots:
         {
             m_imagePath.clear();
 
-            QPixmap pix(":/default/background.jpg");
+            QPixmap pix(":/bg/metro.jpg");
 
             previewLabel->setScaledContents(true);
             previewLabel->setPixmap(
@@ -286,7 +286,7 @@ private slots:
 
             wizard()->setProperty(
                 "backgroundImage",
-                ":/default/background.jpg");
+                ":/bg/metro.jpg");
         }
         else
         {

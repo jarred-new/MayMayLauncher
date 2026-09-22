@@ -611,16 +611,22 @@ void MainWindow::on_pushButton_2_clicked()
     {
         QFileInfo info(filePath);
 
-        QStandardItem *item =
+        if (filePath.endsWith(".mml")) {
+            this->importJsonToStandardModel(filePath);
+        }
+        else
+        {
+            QStandardItem *item =
                 new QStandardItem(
                     iconProvider.icon(info),
                     info.fileName());
 
-        item->setData(filePath, Qt::UserRole);
+            item->setData(filePath, Qt::UserRole);
 
-        m_model->appendRow(item);
+            m_model->appendRow(item);
 
-        saveList();
+            saveList();
+        }
     }
 
     filterLauncherList(searchBox->text());
