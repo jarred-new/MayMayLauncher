@@ -10,6 +10,8 @@
 #include <QSignalBlocker>
 #include <QSettings>
 #include <QUrl>
+#include <QToolTip>
+#include <QCursor>
 
 #include <algorithm>
 
@@ -43,6 +45,7 @@ midiplayer::midiplayer(const QString &path, QWidget *parent)
     setWindowFlags(Qt::Window | Qt::WindowStaysOnBottomHint);
     setWindowState(Qt::WindowFullScreen);
     ui->label->setText(QFileInfo(path).fileName());
+    ui->dial->setTracking(true);
     applyLauncherBackground();
 
     fadeIn = new QPropertyAnimation(this, "windowOpacity");
@@ -79,6 +82,15 @@ midiplayer::midiplayer(const QString &path, QWidget *parent)
     connect(ui->dial, &QDial::valueChanged, this, [this](int value) {
         if (synth) {
             fluid_synth_set_gain(synth, static_cast<float>(value) / 100.0f);
+
+            // Format the text
+            QString tooltipText = QString::number(value);
+            
+            // Anchor it above the center of the dial itself:
+            QPoint globalPos = ui->dial->mapToGlobal(QPoint(ui->dial->width() / 2, 0));
+
+            // Show the tooltip instantly without a delay
+            QToolTip::showText(globalPos, tooltipText, ui->dial);
         }
     });
     positionTimer->start(100);

@@ -5,6 +5,8 @@
 #include <QPalette>
 #include <QtGlobal>
 #include <QFileInfo>
+#include <QToolTip>
+#include <QCursor>
 
 musicplayer::musicplayer(QString path, QWidget *parent) :
     QWidget(parent),
@@ -14,6 +16,7 @@ musicplayer::musicplayer(QString path, QWidget *parent) :
     setAttribute(Qt::WA_DeleteOnClose);
     this->setWindowFlags(Qt::Window | Qt::WindowStaysOnBottomHint);
     this->setWindowState(Qt::WindowFullScreen);
+    ui->dial->setTracking(true);
 
     fadeIn = new QPropertyAnimation(this, "windowOpacity");
     fadeIn->setDuration(500); // Duration in milliseconds
@@ -87,6 +90,15 @@ musicplayer::musicplayer(QString path, QWidget *parent) :
     connect(ui->dial, &QDial::valueChanged, this, [this](int value) {
         if (audioOut) {
             audioOut->setVolume(static_cast<float>(value) / 100.0f);
+
+            // Format the text
+            QString tooltipText = QString::number(value);
+            
+            // Anchor it above the center of the dial itself:
+            QPoint globalPos = ui->dial->mapToGlobal(QPoint(ui->dial->width() / 2, 0));
+
+            // Show the tooltip instantly without a delay
+            QToolTip::showText(globalPos, tooltipText, ui->dial);
         }
     });
 

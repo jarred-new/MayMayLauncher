@@ -4,6 +4,8 @@
 #include <QPixmap>
 #include <QPalette>
 #include <QtGlobal>
+#include <QToolTip>
+#include <QCursor>
 
 videoplayer::videoplayer(QString path, QWidget *parent) :
     QWidget(parent),
@@ -14,6 +16,7 @@ videoplayer::videoplayer(QString path, QWidget *parent) :
 
     this->setWindowFlags(Qt::Window | Qt::WindowStaysOnBottomHint);
     this->setWindowState(Qt::WindowFullScreen);
+    ui->dial->setTracking(true);
 
     fadeIn = new QPropertyAnimation(this, "windowOpacity");
     fadeIn->setDuration(500); // Duration in milliseconds
@@ -95,6 +98,15 @@ videoplayer::videoplayer(QString path, QWidget *parent) :
     connect(ui->dial, &QDial::valueChanged, this, [this](int value) {
         if (audioOut) {
             audioOut->setVolume(static_cast<float>(value) / 100.0f);
+
+            // Format the text
+            QString tooltipText = QString::number(value);
+            
+            // Anchor it above the center of the dial itself:
+            QPoint globalPos = ui->dial->mapToGlobal(QPoint(ui->dial->width() / 2, 0));
+
+            // Show the tooltip instantly without a delay
+            QToolTip::showText(globalPos, tooltipText, ui->dial);
         }
     });
 }
