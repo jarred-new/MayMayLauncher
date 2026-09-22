@@ -290,7 +290,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QSettings settings("JarredApps", "MayMayLauncher");
 
-    this->setWindowFlags(Qt::Window | Qt::WindowStaysOnBottomHint);
+    if (settings.value("minimizedWindowsThisSession", true).toBool()) {
+        this->setWindowFlags(Qt::Window | Qt::WindowStaysOnBottomHint);
+    } else {
+        this->setWindowFlags(Qt::Window);
+    }
     this->setWindowState(Qt::WindowFullScreen);
 
     m_model = new QStandardItemModel(this);

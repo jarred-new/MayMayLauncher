@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>399</width>
+    <width>490</width>
     <height>401</height>
    </rect>
   </property>
@@ -16,7 +16,7 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>50</x>
+     <x>140</x>
      <y>360</y>
      <width>341</width>
      <height>32</height>
@@ -60,7 +60,7 @@ QPushButton:active {
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>381</width>
+     <width>471</width>
      <height>341</height>
     </rect>
    </property>
@@ -149,8 +149,8 @@ QTabBar::tab {
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>60</y>
-       <width>361</width>
+       <y>70</y>
+       <width>451</width>
        <height>61</height>
       </rect>
      </property>
@@ -195,7 +195,7 @@ QTabBar::tab {
       <rect>
        <x>10</x>
        <y>200</y>
-       <width>361</width>
+       <width>451</width>
        <height>41</height>
       </rect>
      </property>
@@ -238,7 +238,7 @@ QPushButton:active {
       <rect>
        <x>10</x>
        <y>250</y>
-       <width>361</width>
+       <width>451</width>
        <height>41</height>
       </rect>
      </property>
@@ -296,24 +296,24 @@ QPushButton:active {
      <property name="geometry">
       <rect>
        <x>10</x>
-    <y>50</y>
-       <width>350</width>
-    <height>34</height>
+       <y>40</y>
+       <width>371</width>
+       <height>34</height>
       </rect>
      </property>
      <property name="whatsThis">
       <string>Do not minimize other open windows when the launcher opens.</string>
      </property>
      <property name="text">
-      <string>Don't minimize all open windows when opening the launcher and restore on closing the launcher</string>
+      <string>Do not minimize other open windows when the launcher opens.</string>
      </property>
     </widget>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="geometry">
       <rect>
        <x>10</x>
-    <y>140</y>
-       <width>361</width>
+       <y>140</y>
+       <width>451</width>
        <height>61</height>
       </rect>
      </property>
@@ -323,7 +323,7 @@ QPushButton:active {
      <widget class="QPushButton" name="pushButton_7">
       <property name="geometry">
        <rect>
-        <x>270</x>
+        <x>360</x>
         <y>30</y>
         <width>80</width>
         <height>24</height>
@@ -363,7 +363,7 @@ QPushButton:active {
      <widget class="QPushButton" name="pushButton_8">
       <property name="geometry">
        <rect>
-        <x>220</x>
+        <x>310</x>
         <y>30</y>
         <width>41</width>
         <height>24</height>
@@ -405,7 +405,7 @@ QPushButton:active {
        <rect>
         <x>10</x>
         <y>30</y>
-        <width>201</width>
+        <width>291</width>
         <height>24</height>
        </rect>
       </property>
@@ -419,7 +419,7 @@ QPushButton:active {
     <widget class="QPushButton" name="pushButton_3">
      <property name="geometry">
       <rect>
-       <x>200</x>
+       <x>280</x>
        <y>20</y>
        <width>171</width>
        <height>41</height>
@@ -478,7 +478,7 @@ QPushButton:active {
     <widget class="QPushButton" name="pushButton_4">
      <property name="geometry">
       <rect>
-       <x>200</x>
+       <x>280</x>
        <y>70</y>
        <width>171</width>
        <height>41</height>
@@ -539,7 +539,7 @@ QPushButton:active {
       <rect>
        <x>10</x>
        <y>120</y>
-       <width>361</width>
+       <width>441</width>
        <height>31</height>
       </rect>
      </property>
@@ -585,7 +585,7 @@ QPushButton:active {
     <widget class="QLabel" name="label_3">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>40</x>
        <y>90</y>
        <width>381</width>
        <height>51</height>
@@ -607,7 +607,7 @@ QPushButton:active {
     <widget class="QPushButton" name="pushButton_6">
      <property name="geometry">
       <rect>
-       <x>90</x>
+       <x>130</x>
        <y>150</y>
        <width>191</width>
        <height>31</height>
@@ -650,7 +650,7 @@ QPushButton:active {
     <widget class="QLabel" name="label_4">
      <property name="geometry">
       <rect>
-       <x>140</x>
+       <x>180</x>
        <y>10</y>
        <width>91</width>
        <height>91</height>
@@ -673,7 +673,7 @@ QPushButton:active {
     <rect>
      <x>10</x>
      <y>350</y>
-     <width>381</width>
+     <width>471</width>
      <height>16</height>
     </rect>
    </property>
