@@ -391,7 +391,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMenu *changeBgMenu = contextMenu->addMenu("Change BG");
     QAction *fromFileAction = changeBgMenu->addAction("From File...");
     QAction *defaultBgAction = changeBgMenu->addAction("Default BG");
-    QAction *testCrashAction = contextMenu->addAction("Test Crash \(for debug only\)");
+    QAction *testCrashAction = contextMenu->addAction("Test Crash (for debug only)");
         connect(aboutAction, &QAction::triggered, this, [this]() {
             QString htmlAbout;
 
@@ -607,7 +607,7 @@ void MainWindow::on_pushButton_2_clicked()
 
     QFileIconProvider iconProvider;
 
-    foreach (QString filePath, files)
+    for (const QString &filePath : files)
     {
         QFileInfo info(filePath);
 
@@ -850,7 +850,7 @@ bool MainWindow::importJsonToStandardModel(const QString &fileName)
 
     m_model->removeRows(0, m_model->rowCount());
 
-    foreach (QJsonValue value, files)
+    for (const QJsonValue &value : files)
     {
         QString path = value.toString();
 
