@@ -607,7 +607,7 @@ void MainWindow::on_pushButton_2_clicked()
 
     QFileIconProvider iconProvider;
 
-    for (const QString &filePath : qAsConst(files))
+    for (const QString &filePath : std::as_const(files))
     {
         QFileInfo info(filePath);
 
@@ -850,7 +850,7 @@ bool MainWindow::importJsonToStandardModel(const QString &fileName)
 
     m_model->removeRows(0, m_model->rowCount());
 
-    for (const QJsonValue &value : qAsConst(files))
+    for (const QJsonValue &value : std::as_const(files))
     {
         QString path = value.toString();
 
