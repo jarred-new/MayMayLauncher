@@ -20,7 +20,23 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
                 settings.value("useMediaPlayer", true).toBool());
 
     ui->checkBox_2->setChecked(
-                settings.value("skip_warning_msg", false).toBool());
+            !settings.value("skip_warning_msg", true).toBool());
+
+        const bool dontMinimizeWindows = settings.value(
+            "dontMinimizeWindows", true).toBool();
+        ui->checkBox_3->setChecked(dontMinimizeWindows);
+        if (dontMinimizeWindows) {
+            ui->checkBox_2->setChecked(false);
+        }
+        ui->checkBox_2->setEnabled(!dontMinimizeWindows);
+
+        connect(ui->checkBox_3, &QCheckBox::toggled,
+                this, [this](bool checked) {
+            ui->checkBox_2->setEnabled(!checked);
+            if (checked) {
+                ui->checkBox_2->setChecked(false);
+            }
+        });
 
     if (settings.value("viewMode", "icons").toString()
             == "icons") {
@@ -70,7 +86,7 @@ void SettingsDialog::on_buttonBox_accepted()
     QSettings settings("JarredApps", "MayMayLauncher");
 
     useMediaPlayer = ui->checkBox->isChecked();
-    skip_warning_msg = ui->checkBox_2->isChecked();
+    skip_warning_msg = !ui->checkBox_2->isChecked();
 
     if (ui->radioButton->isChecked() && !ui->radioButton_2->isChecked()) {
         settings.setValue("viewMode", "icons");
@@ -82,6 +98,7 @@ void SettingsDialog::on_buttonBox_accepted()
     MainWindow::updateListDisplay();
 
     settings.setValue("skip_warning_msg", skip_warning_msg);
+    settings.setValue("dontMinimizeWindows", ui->checkBox_3->isChecked());
     settings.setValue("useMediaPlayer", useMediaPlayer);
 
     settings.setValue("Midi/SoundFont", ui->lineEdit->text());

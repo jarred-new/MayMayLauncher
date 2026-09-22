@@ -497,7 +497,6 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
-    RestoreUpAll();
 }
 
 //void MainWindow::on_MainWindow_destroyed()
@@ -518,6 +517,9 @@ void MainWindow::closeEvent(QCloseEvent *event) {
 
     if (comfirmQuit == QMessageBox::Yes) {
         saveList();
+        if (shouldRestoreWindows()) {
+            RestoreUpAll();
+        }
         event->accept();
         QMainWindow::closeEvent(event);
     }
@@ -525,6 +527,12 @@ void MainWindow::closeEvent(QCloseEvent *event) {
         event->ignore();
     }
     //    QMainWindow::closeEvent(event);
+}
+
+bool MainWindow::shouldRestoreWindows()
+{
+    QSettings settings("JarredApps", "MayMayLauncher");
+    return settings.value("minimizedWindowsThisSession", false).toBool();
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
@@ -606,8 +614,9 @@ void MainWindow::on_pushButton_2_clicked()
                     "All Files (*.*)");
 
     QFileIconProvider iconProvider;
+    const QStringList &constFiles = files;
 
-    for (const QString &filePath : std::as_const(files))
+    for (const QString &filePath : constFiles)
     {
         QFileInfo info(filePath);
 
@@ -845,12 +854,13 @@ bool MainWindow::importJsonToStandardModel(const QString &fileName)
     QJsonObject root = doc.object();
     QJsonArray files =
         root.value("files").toArray();
+    const QJsonArray &constFiles = files;
 
     QFileIconProvider iconProvider;
 
     m_model->removeRows(0, m_model->rowCount());
 
-    for (const QJsonValue &value : std::as_const(files))
+    for (const QJsonValue &value : constFiles)
     {
         QString path = value.toString();
 

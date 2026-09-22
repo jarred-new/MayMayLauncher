@@ -35,6 +35,7 @@ public:
     static void exportLists();
     static void importLists();
     static void setLauncherBg();
+    static bool shouldRestoreWindows();
 
 //signals:
 //    void enterPressed(const QModelIndex &index);

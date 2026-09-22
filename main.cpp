@@ -88,106 +88,47 @@ int main(int argc, char *argv[])
 
     if (settings.value("firstTime", true).toBool()) {
         createWizard();
-        // 1. Check if the user previously checked the box
-        if (settings.value("skip_warning_msg", false).toBool()) {
-    //        QMessageBox::information(nullptr,
-    //            "Cannot Continue",
-    //            "The warning message has been skipped as per your preference.");
-    //        return 0;
-            MinimieAllWindows();
-            CrashHandler::install();
-            MainWindow w;
-            w.show();
+    }
 
-            return a.exec();
-        }
+    const bool dontMinimizeWindows = settings.value(
+        "dontMinimizeWindows", true).toBool();
+    const bool showWarning = !settings.value(
+        "skip_warning_msg", true).toBool();
 
-        // 2. Configure the QMessageBox instance
+    settings.setValue("minimizedWindowsThisSession", false);
+
+    if (!dontMinimizeWindows && showWarning) {
         QMessageBox msgBox(nullptr);
         msgBox.setWindowTitle("Warning!");
         msgBox.setWindowIcon(QIcon(":/default/MayMayLauncher.ico"));
         msgBox.setIcon(QMessageBox::Icon::Warning);
-        msgBox.setText("This app will minimize all windows "
-                       "\n"
-                       "(which it will never ruin your work but it will be buggy.)"
-                       "\n"
-                       "As you close this launcher, it will restore all apps\n\n"
+        msgBox.setText("This app will minimize all windows.\n\n"
+                       "As you close this launcher, it will restore all apps.\n\n"
                        "Do you want to continue?");
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setDefaultButton(QMessageBox::No);
 
-        // 3. Create and attach the checkbox
-        QCheckBox *checkBox = new QCheckBox("Don't show this message again", &msgBox);
+        QCheckBox *checkBox = new QCheckBox(
+            "Don't show this message again", &msgBox);
         msgBox.setCheckBox(checkBox);
 
-        // 4. Display the dialog and save user preference if accepted
-        int result = msgBox.exec();
-        if (result == QMessageBox::Yes) {
-            if (checkBox->isChecked()) {
-                settings.setValue("skip_warning_msg", true);
-            }
-            MinimieAllWindows();
-            CrashHandler::install();
-            MainWindow w;
-            w.show();
-
-            return a.exec();
-        }
-        else {
+        if (msgBox.exec() != QMessageBox::Yes) {
             return 0;
         }
-    }
-    else {
 
-        // 1. Check if the user previously checked the box
-        if (settings.value("skip_warning_msg", false).toBool()) {
-    //        QMessageBox::information(nullptr,
-    //            "Cannot Continue",
-    //            "The warning message has been skipped as per your preference.");
-    //        return 0;
-            MinimieAllWindows();
-            CrashHandler::install();
-            MainWindow w;
-            w.show();
-
-            return a.exec();
-        }
-
-        // 2. Configure the QMessageBox instance
-        QMessageBox msgBox(nullptr);
-        msgBox.setWindowTitle("Warning!");
-        msgBox.setWindowIcon(QIcon(":/default/MayMayLauncher.ico"));
-        msgBox.setIcon(QMessageBox::Icon::Warning);
-        msgBox.setText("This app will minimize all windows "
-                       "\n"
-                       "(which it will never ruin your work but it will be buggy.)"
-                       "\n"
-                       "As you close this launcher, it will restore all apps\n\n"
-                       "Do you want to continue?");
-        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-        msgBox.setDefaultButton(QMessageBox::No);
-
-        // 3. Create and attach the checkbox
-        QCheckBox *checkBox = new QCheckBox("Don't show this message again", &msgBox);
-        msgBox.setCheckBox(checkBox);
-
-        // 4. Display the dialog and save user preference if accepted
-        int result = msgBox.exec();
-        if (result == QMessageBox::Yes) {
-            if (checkBox->isChecked()) {
-                settings.setValue("skip_warning_msg", true);
-            }
-            MinimieAllWindows();
-            CrashHandler::install();
-            MainWindow w;
-            w.show();
-
-            return a.exec();
-        }
-        else {
-            return 0;
+        if (checkBox->isChecked()) {
+            settings.setValue("skip_warning_msg", true);
         }
     }
 
-    return 0;
+    if (!dontMinimizeWindows) {
+        MinimieAllWindows();
+        settings.setValue("minimizedWindowsThisSession", true);
+    }
+
+    CrashHandler::install();
+    MainWindow w;
+    w.show();
+
+    return a.exec();
 }

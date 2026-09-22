@@ -292,11 +292,27 @@ QPushButton:active {
       <string>Show Minimize Warning</string>
      </property>
     </widget>
+    <widget class="QCheckBox" name="checkBox_3">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+    <y>50</y>
+       <width>350</width>
+    <height>34</height>
+      </rect>
+     </property>
+     <property name="whatsThis">
+      <string>Do not minimize other open windows when the launcher opens.</string>
+     </property>
+     <property name="text">
+      <string>Don't minimize all open windows when opening the launcher and restore on closing the launcher</string>
+     </property>
+    </widget>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>130</y>
+    <y>140</y>
        <width>361</width>
        <height>61</height>
       </rect>
