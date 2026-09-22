@@ -397,7 +397,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
             htmlAbout.append("<h1>MayMayLauncher</h1>");
             htmlAbout.append("</br>");
-            htmlAbout.append("<p>Version 2.0 (beta)</p>");
+            htmlAbout.append("<p>Version 2.0</p>");
             htmlAbout.append("</br>");
             htmlAbout.append("<p>Created by: Jarred</p>");
 
@@ -417,8 +417,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
             QMessageBox aboutBox;
 
-            aboutBox.setWindowTitle("About MayMayLauncher (prerelease)"); //prerelease
-            //aboutBox.setWindowTitle("About MayMayLauncher");
+            //aboutBox.setWindowTitle("About MayMayLauncher (prerelease)"); //prerelease
+            aboutBox.setWindowTitle("About MayMayLauncher");
             aboutBox.setInformativeText(htmlAbout);
 
             QPushButton* okButton = aboutBox.addButton(QMessageBox::Ok);
